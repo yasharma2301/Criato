@@ -7,3 +7,9 @@
   margin: 0;
   padding: 0;
 }
+
+@layer components {
+  .custom-container {
+    @apply max-w-screen-2xl mx-auto px-5;
+  }
+}
