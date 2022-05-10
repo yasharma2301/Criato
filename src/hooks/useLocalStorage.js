@@ -9,6 +9,7 @@ function getSavedValue(key, initialValue) {
     return initialValue;
 }
 
+// Custom local storage hook, acts as a wrapper on useState
 export default function useLocalStorage(key, initialValue) {
     const [value, setValue] = useState(() => {
         return getSavedValue(key, initialValue);

@@ -1,21 +1,26 @@
 import { useState, createContext, useMemo, useContext, useEffect } from 'react';
 import { orderBy } from '../Utility/Utility';
 import { PROMOTED, OPEN, RATING_HTL, DELIVERY_EARLIEST, COST_LTH, RATING, COST_FOR_TWO, DELIVERY } from '../components/Constants'
-import useLocalStorage from '../hooks/useLocalStorage';
 
+// React context for restaurants and related filters
 export const RestaurantContext = createContext();
 
+// wrapper function for useContext hook
 export function useRestaurant() {
     return useContext(RestaurantContext);
 }
 
+// Custom hook, receives initial data from via server side rendering
 export function RestaurantProvider({ children, initialData }) {
+
+    // sort initial data using custom order by fucntion to push the closed restraunts at end and promoted at start
     const sortedInitialData = orderBy(initialData, [
         { key: OPEN, inverse: true },
         { key: PROMOTED, inverse: true }
     ])
     const [restaurants, setRestraunts] = useState(sortedInitialData || []);
 
+    // get cuisines from all the restraunts and populate under filters section
     const cuisinesData = [...new Set(initialData.reduce((acc, restaurant) => [...restaurant?.cuisine, ...acc], []))]
         .map(cuisineData => ({
             checked: false,
@@ -23,13 +28,15 @@ export function RestaurantProvider({ children, initialData }) {
         }));
     const [cuisines, setCuisines] = useState(cuisinesData)
 
+    // query for searching by name
     const [searchQuery, setSearchQuery] = useState([])
     const addToSearch = (search) => setSearchQuery(prevSearch => (prevSearch.filter(s => s === search).length > 0 ? prevSearch : [search, ...prevSearch]))
     const removeFromSearch = (search) => setSearchQuery(prevSearch => prevSearch.filter(prev => prev.toLowerCase() !== search.toLowerCase()))
 
+    // query for sorthing by different methods
     const [sortQuery, setSortQuery] = useState('')
 
-
+    // run useEffect as and when query paramters change
     useEffect(() => {
 
         const filterCuisine = sortedInitialData.filter(data => {

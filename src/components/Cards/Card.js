@@ -1,12 +1,24 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Rating from './Rating'
 
 export default function Card({ restaurant }) {
+    const [imageError, setImageError] = useState(true)
+
     return (
         <div className='h-min p-3 bg-white text-black rounded-xl cursor-pointer hover:shadow-lg border border-transparent hover:shadow-zinc-200 hover:border hover:border-zinc-200'>
             <div className='relative'>
-                
-                <img className='absolute top-0  h-72 object-cover overflow-hidden rounded-xl w-max' loading="lazy" src={restaurant.image} alt=""></img>
+
+                <img className='absolute top-0 w-full h-72 object-cover overflow-hidden rounded-xl'
+                    loading="lazy"
+                    src={restaurant.image}
+                    alt=""
+                    onError={e => {
+                        if (imageError) {
+                            setImageError(false);
+                            e.target.src = '/fallback.jpg'
+                        }
+                    }} />
+
                 <div className='w-full h-72  rounded-xl bg-zinc-200 flex items-center justify-center flex-col gap-1 text-zinc-500'>
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 " fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
