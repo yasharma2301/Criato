@@ -27,7 +27,7 @@ export default function Card({ restaurant }) {
                 {
                     restaurant?.promoted && (
                         <div className='absolute top-3 left-2 bg-yellow-400 p-1 text-white font-bold rounded-lg'>
-                            Criato's Choice
+                            Criato&apos;s Choice
                         </div>
                     )
                 }
