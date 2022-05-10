@@ -3,8 +3,8 @@ import SortBy from './SortBy'
 import CuisineFilter from './CuisineFilter'
 
 const tabs = [
-    { name: 'Sort By', component: <SortBy /> },
-    { name: 'Cuisines', component: <CuisineFilter /> },
+    { name: 'Sort By' },
+    { name: 'Cuisines' },
 ]
 
 export default function FilterTabs({ closeModal }) {

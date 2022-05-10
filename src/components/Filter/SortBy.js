@@ -1,12 +1,15 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { RadioGroup } from '@headlessui/react'
-import { DELIVERY_EARLIEST, COST_LTH, RATING_HTL } from './Constants'
+import { DELIVERY_EARLIEST, COST_LTH, RATING_HTL } from '../Constants'
+import { useRestaurant } from '../../Context/useRestaurants'
 
 export default function SortBy() {
-    const [plan, setPlan] = useState()
+    const { sortQuery, setSortQuery } = useRestaurant();
+
+    const onChange = (value) => setSortQuery(value);
 
     return (
-        <RadioGroup value={plan} onChange={setPlan}>
+        <RadioGroup value={sortQuery} onChange={onChange}>
             <RadioGroup.Option value={RATING_HTL}>
                 {({ checked }) => (
                     <RadioCard checked={checked} name={RATING_HTL} />
@@ -20,6 +23,11 @@ export default function SortBy() {
             <RadioGroup.Option value={DELIVERY_EARLIEST}>
                 {({ checked }) => (
                     <RadioCard checked={checked} name={DELIVERY_EARLIEST} />
+                )}
+            </RadioGroup.Option>
+            <RadioGroup.Option value={''}>
+                {({ checked }) => (
+                    <RadioCard checked={checked} name={'None'} />
                 )}
             </RadioGroup.Option>
         </RadioGroup>
