@@ -10,3 +10,7 @@ export const FILTER = 'filter';
 
 export const PROMOTED = 'promoted';
 export const OPEN = 'open';
+
+export const RATING = 'rating'
+export const COST_FOR_TWO = 'costForTwo'
+export const DELIVERY = 'deliveryTimeInMinutes'

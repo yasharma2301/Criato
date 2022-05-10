@@ -1,6 +1,6 @@
 import { useState, createContext, useMemo, useContext, useEffect } from 'react';
 import { orderBy } from '../Utility/Utility';
-import { SEARCH, SORT, FILTER, PROMOTED, OPEN, RATING_HTL, DELIVERY_EARLIEST, COST_LTH } from '../components/Constants'
+import { PROMOTED, OPEN, RATING_HTL, DELIVERY_EARLIEST, COST_LTH, RATING, COST_FOR_TWO, DELIVERY } from '../components/Constants'
 import useLocalStorage from '../hooks/useLocalStorage';
 
 export const RestaurantContext = createContext();
@@ -11,8 +11,8 @@ export function useRestaurant() {
 
 export function RestaurantProvider({ children, initialData }) {
     const sortedInitialData = orderBy(initialData, [
-        { key: 'open', inverse: true },
-        { key: 'promoted', inverse: true }
+        { key: OPEN, inverse: true },
+        { key: PROMOTED, inverse: true }
     ])
     const [restaurants, setRestraunts] = useState(sortedInitialData || []);
 
@@ -22,16 +22,6 @@ export function RestaurantProvider({ children, initialData }) {
             cuisine: cuisineData
         }));
     const [cuisines, setCuisines] = useState(cuisinesData)
-
-    const toggleCuisine = (c) => {
-        const cuisine = c.cuisine;
-        setCuisines(cuisines.map(item => {
-            if (item.cuisine === cuisine) {
-                return { ...item, checked: !item.checked };
-            }
-            return item;
-        }));
-    }
 
     const [searchQuery, setSearchQuery] = useState([])
     const addToSearch = (search) => setSearchQuery(prevSearch => (prevSearch.filter(s => s === search).length > 0 ? prevSearch : [search, ...prevSearch]))
@@ -77,11 +67,11 @@ export function RestaurantProvider({ children, initialData }) {
         let data;
 
         if (sortQuery === RATING_HTL)
-            data = orderBy(searchData, [{ key: 'open', inverse: true }, { key: 'rating', inverse: true }, { key: 'promoted', inverse: true }])
+            data = orderBy(searchData, [{ key: OPEN, inverse: true }, { key: RATING, inverse: true }, { key: PROMOTED, inverse: true }])
         else if (sortQuery === COST_LTH)
-            data = orderBy(searchData, [{ key: 'open', inverse: true }, { key: 'costForTwo', inverse: false }, { key: 'promoted', inverse: true }])
+            data = orderBy(searchData, [{ key: OPEN, inverse: true }, { key: COST_FOR_TWO, inverse: false }, { key: PROMOTED, inverse: true }])
         else if (sortQuery === DELIVERY_EARLIEST)
-            data = orderBy(searchData, [{ key: 'open', inverse: true }, { key: 'deliveryTimeInMinutes', inverse: false }, { key: 'promoted', inverse: true }])
+            data = orderBy(searchData, [{ key: OPEN, inverse: true }, { key: DELIVERY, inverse: false }, { key: PROMOTED, inverse: true }])
         else if (sortQuery === '')
             data = searchData;
 
@@ -90,7 +80,7 @@ export function RestaurantProvider({ children, initialData }) {
     }, [sortQuery, searchQuery, cuisines])
 
     return (
-        <RestaurantContext.Provider value={{ restaurants, setRestraunts, cuisines, toggleCuisine, sortQuery, setSortQuery, searchQuery, addToSearch, removeFromSearch }}>
+        <RestaurantContext.Provider value={{ restaurants, setRestraunts, cuisines, setCuisines, sortQuery, setSortQuery, searchQuery, addToSearch, removeFromSearch }}>
             {children}
         </RestaurantContext.Provider >
     );
