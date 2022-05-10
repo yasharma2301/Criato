@@ -51,8 +51,8 @@ export default function FilterDialog() {
                                 <FilterTabs closeModal={closeModal} />
                                 <div className="mb-2 border-b"> </div>
                                 <div className="mt-4 flex gap-x-3 px-4 pb-4 justify-end">
-                                    <Button onClick={closeModal} success={false} name="Cancel" />
-                                    <Button success={true} name="Apply" />
+                                    <Button onClick={closeModal} primary={false} name="Cancel" />
+                                    <Button primary={true} name="Apply" />
                                 </div>
                             </div>
 
